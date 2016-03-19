@@ -126,30 +126,4 @@ CODE
 	return $this->get_unique(@result);
 }
 
-
-=pod
-sub get_stretches_whose_vertex_is_the_point
-{
-	my $this = shift;
-	my $point = shift;
-	return $this->get_solution(__LINE__,"X", "is_a_Vertex($$point{name},X), is_a_Stretch(X)",<<CONTEXT);
-
-is_a_Vertex(P,X):-is_a_Point(P), belongs_to(P,X).
-
-CONTEXT
-}
-
-
-sub get_polygons_whose_vertex_is_the_point
-{
-	my $this = shift;
-	my $point = shift;
-
-	croak "empty point" unless $point;
-	
-	return $this->get_solution(__LINE__,"X", "is_a_Point($$point{name}), belongs_to($$point{name}, EDGE), belongs_to(EDGE, X), is_a_Polygon(X)");
-}
-
-=cut
-
 1;

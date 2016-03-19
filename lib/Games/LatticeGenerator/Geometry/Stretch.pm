@@ -40,12 +40,15 @@ sub new
 	croak "length cannot be negative ($$this{length}) " unless $$this{length}>=0.0;
 
 	$$this{description} .= join("", map { 
-<<OPIS
+<<DESCRIPTION
 $$this{points}[$_]{description}
 belongs_to($$this{points}[$_]{name}, $this).
-has_length($$this{name}, $$this{length}).
-OPIS
+DESCRIPTION
 } 0..1);
+
+	$$this{description} .= <<DESCRIPTION;
+has_length($$this{name}, $$this{length}).
+DESCRIPTION
 	
 	return $this;
 }
