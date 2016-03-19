@@ -43,6 +43,12 @@ sub new
 	return $this;
 }
 
+
+=head2 calculate_the_scale_of
+
+Calculates the maximum scale of the given sheet. 
+
+=cut
 sub calculate_the_scale_of
 {
 	my ($this, $model, $sheet) = @_;
@@ -67,6 +73,11 @@ sub calculate_the_scale_of
 	return undef;
 }
 
+=head2 save_the_lattice_of
+
+Saves the lattice's sheet into a PNG file.
+
+=cut
 sub save_the_lattice_of
 {
 	my ($this, $model, $sheet) = @_;
@@ -90,12 +101,21 @@ sub save_the_lattice_of
 	}
 }
 
+=head2 create_a_random_model
 
+Creates a model of the given class, calculates the scales of all the sheets, chooses the smallest scale
+and saves the sheets into PNG files.
+
+=cut
 sub create_a_random_model
 {
 	my ($this,$class) = @_;
 
-	my $model = $class->new(prefix => "alpha", name => "alpha", add_description => $$this{add_description}, debug => $$this{debug});
+	my $model = $class->new(
+		prefix => "alpha", 
+		name => "alpha", 
+		add_description => $$this{add_description}, 
+		debug => $$this{debug});
 	
 	carp "missing amount_of_sheets" unless defined $$model{amount_of_sheets};
 	

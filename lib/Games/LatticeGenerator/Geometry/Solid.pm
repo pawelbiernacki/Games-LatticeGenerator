@@ -7,6 +7,27 @@ use base 'Games::LatticeGenerator::ObjectDescribedByFacts';
 
 
 
+=head1 NAME
+
+Games::LatticeGenerator::Geometry::Solid
+
+=head1 VERSION
+
+Version 0.01
+
+=cut
+
+our $VERSION = '0.01';
+
+
+
+=head1 SUBROUTINES/METHODS
+
+=head2 new
+
+A constructor.
+
+=cut
 sub new
 {
 	my $class = shift;
@@ -24,12 +45,18 @@ DESCRIPTION
 	return $this;
 }
 
+=head2 get_edges
+
+=cut
 sub get_edges
 {
 	my $this = shift;
 	return $this->get_solution(__LINE__,"X", "is_a_Stretch(X), belongs_to(X, PLANE), is_a_Polygon(PLANE), belongs_to(PLANE, $$this{name})");
 }
 
+=head2 get_amount_of_planes
+
+=cut
 sub get_amount_of_planes
 {
 	my $this = shift;

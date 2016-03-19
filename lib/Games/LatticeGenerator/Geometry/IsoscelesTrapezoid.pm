@@ -6,6 +6,25 @@ use Carp;
 use base 'Games::LatticeGenerator::Geometry::Trapezoid';
 
 
+=head1 NAME
+
+Games::LatticeGenerator::Geometry::IsoscelesTrapezoid 
+
+=head1 VERSION
+
+Version 0.01
+
+=cut
+
+our $VERSION = '0.01';
+
+=head1 SUBROUTINES/METHODS
+
+=head2 new
+
+A constructor. It adds knowledge about the bases (upper and lower).
+
+=cut
 sub new
 {
 	my $class = shift;
@@ -30,7 +49,11 @@ DESCRIPTION
 
 
 
+=head2 add_knowledge_about_internal_angles
 
+Calculates the internal angles and adds the knowledge about them.
+
+=cut
 sub add_knowledge_about_internal_angles
 {
 	my $this = shift;

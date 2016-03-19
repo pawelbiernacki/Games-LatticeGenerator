@@ -12,6 +12,30 @@ use Carp;
 use Games::LatticeGenerator::Model;
 use base 'Games::LatticeGenerator::Model';
 
+
+
+
+=head1 NAME
+
+Games::LatticeGenerator::Model::Spaceship
+
+=head1 VERSION
+
+Version 0.01
+
+=cut
+
+our $VERSION = '0.01';
+
+
+
+=head1 SUBROUTINES/METHODS
+
+=head2 new
+
+A constructor.
+
+=cut
 sub new
 {
 	my $class = shift;

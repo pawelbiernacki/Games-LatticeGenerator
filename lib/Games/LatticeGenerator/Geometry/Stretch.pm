@@ -7,6 +7,28 @@ use base 'Games::LatticeGenerator::ObjectDescribedByFacts';
 use Carp;
 
 
+
+=head1 NAME
+
+Games::LatticeGenerator::Geometry::Stretch
+
+=head1 VERSION
+
+Version 0.01
+
+=cut
+
+our $VERSION = '0.01';
+
+
+
+=head1 SUBROUTINES/METHODS
+
+=head2 new
+
+A constructor.
+
+=cut
 sub new
 {
 	my $class = shift;

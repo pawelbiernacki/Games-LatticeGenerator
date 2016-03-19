@@ -7,6 +7,21 @@ use GD::Simple;
 use Games::LatticeGenerator::ObjectDescribedByFacts;
 use base 'Games::LatticeGenerator::ObjectDescribedByFacts';
 
+
+=head1 NAME
+
+Games::LatticeGenerator::Model - The Games::LatticeGenerator::Model.
+
+=head1 VERSION
+
+Version 0.01
+
+=cut
+
+our $VERSION = '0.01';
+
+=head1 SUBROUTINES/METHODS
+
 =head2 new
 
 A constructor. It calls the superconstructor and adds a hash "coordinates".
@@ -50,7 +65,11 @@ sub get_amount_of_solids
 	return scalar(@{$$this{solids}});
 }
 
+=head2 get_candidates
 
+Returns a list of planes connected to the lattice that have a common edge with the given plane.
+
+=cut
 sub get_candidates
 {
 	my ($this, $plane, $knowledge_about_planes_connected_to_lattice, $knowledge_about_connections_between_planes, $list_of_planes_connected_to_lattice_ref) = @_;
@@ -67,12 +86,22 @@ sub get_candidates
 	return @result;
 }
 
+=head2 create_png
+
+Creates an img object (an image).
+
+=cut
 sub create_png
 {
 	my $this = shift;
 	$$this{img} = GD::Simple->new(450, 670);	
 }
 
+=head2 save_png
+
+Saves an image into a file.
+
+=cut
 sub save_png
 {
 	my ($this, $filename) = @_;
@@ -85,7 +114,11 @@ sub save_png
 	close FILE;
 }
 
+=head2 add_knowledge
 
+Adds given knowledge (Prolog facts and rules) to the description.
+
+=cut
 sub add_knowledge
 {
 	my ($this, $knowledge) = @_;
@@ -97,19 +130,34 @@ sub add_knowledge
 	}
 }
 
+=head2 get_edges
 
+Returns all edges belonging to this object.
+
+=cut
 sub get_edges
 {
 	my $this = shift;	
 	return $this->get_solution(__LINE__,"EDGE", "is_a_Stretch(EDGE), belongs_to(EDGE, PLANE), is_a_Polygon(PLANE), belongs_to(PLANE, SOLID), belongs_to(SOLID, $$this{name})");
 }
 
+=head2 get_planes
+
+Returns all planes belonging to this object.
+
+=cut
 sub get_planes
 {
 	my $this = shift;
 	return $this->get_solution(__LINE__,"PLANE", "is_a_Polygon(PLANE), belongs_to(PLANE, SOLID), belongs_to(SOLID, $$this{name})");
 }
 
+=head2 set_the_point_coordinates
+
+Sets the point coordinates. It refers to the points on the lattice (not in the 3D space!), so the points are
+denoted with their respective plane.
+
+=cut
 sub set_the_point_coordinates
 {
 	my ($this, $coordinates_ref, $plane, $point, $x, $y) = @_;
@@ -120,11 +168,19 @@ sub set_the_point_coordinates
 	$$coordinates_ref{$plane.$point} = { x => $x, y => $y };
 }
 
+=head2 make_decision_whether_to_do_an_overlap
+
+=cut
 sub make_decision_whether_to_do_an_overlap
 {
 	return 0;
 }
 
+=head2 determine_the_coordinates_of_additional_points_for_overlaps
+
+It creates two additional overlap points and calculates their coordinates.
+
+=cut
 sub determine_the_coordinates_of_additional_points_for_overlaps
 {
 	my ($this, $plane, $vertex1, $vertex2, $alpha, $coordinates_ref) = @_;
@@ -156,6 +212,11 @@ INFORMATION_ABOUT_OVERLAP
 	}				
 }
 
+=head2 determine_the_coordinates_of_planes_adjacent_to_the_edge
+
+Given an edge of a plane it determines the coordinates of the vertices of the planes adjacent to it.
+
+=cut
 sub determine_the_coordinates_of_planes_adjacent_to_the_edge
 {
 	my ($this, $plane, $vertex1, $vertex2, $alpha, $knowledge_about_processed_planes, $coordinates_ref) = @_;
@@ -213,7 +274,11 @@ KNOWLEDGE_ABOUT_PROCESSED_VERTICES
 }
 
 
+=head2 determine_the_coordinates_beginning_at
 
+Determine the coordinates of the vertices beginning at the first and second one.
+
+=cut
 sub determine_the_coordinates_beginning_at
 {
 	my ($this, $plane, $first, $x, $y, $second, $alpha, $amount_of_vertices, $knowledge_about_processed_planes, 
@@ -283,6 +348,11 @@ CONDITION
 	$this->determine_the_coordinates_of_planes_adjacent_to_the_edge($plane, $subsequent, $first, $alpha, $knowledge_about_processed_planes, $coordinates_ref);
 }
 
+=head2 determine_the_coordinates
+
+Determine the coordinates of the vertices of the first visible plane (and the others).
+
+=cut
 sub determine_the_coordinates
 {
 	my $this = shift;
@@ -329,6 +399,11 @@ KNOWLEDGE_ABOUT_PROCESSED_VERTICES
 	$$this{coordinates} = \%coordinates;
 }
 
+=head2 select_the_second_point_when_determining_the_coordinates
+
+Given a plane and its vertex (first) select randomly another vertex adjacent to it.
+
+=cut
 sub select_the_second_point_when_determining_the_coordinates
 {
 	my ($this, $plane, $first, $neighbours_ref) = @_;
@@ -364,7 +439,11 @@ sub select_the_second_point_when_determining_the_coordinates
 	return $$neighbours_ref[int(rand() % scalar(@$neighbours_ref))];
 }
 
+=head2 create_a_lattice
 
+Creates a lattice for the given model.
+
+=cut
 sub create_a_lattice
 {
 	my $this = shift;
@@ -407,7 +486,12 @@ CONDITION
 	return $this->add_to_lattice($visible_planes[0], "", "", [], 0, []);
 }
 
+=head2 find_common_edges
 
+Stores the knowledge about common edges of visible planes in a separate structure so that we do not need to
+call Prolog afterwards.
+
+=cut
 sub find_common_edges
 {
 	my $this = shift;
@@ -431,7 +515,11 @@ sub find_common_edges
 	}
 }
 
+=head2 find_internal_angles
 
+Stores the knowledge about internal angles in a separate structure.
+
+=cut
 sub find_internal_angles
 {
 	my $this = shift;
@@ -452,7 +540,11 @@ sub find_internal_angles
 	}
 }
 
+=head2 add_to_lattice
 
+Finds te candidates and adds them to the lattice.
+
+=cut
 sub add_to_lattice
 {
 	my ($this, 
@@ -506,8 +598,10 @@ sub add_to_lattice
 	return 0;
 }
 
+=head2 get_common_edge
 
 
+=cut
 sub get_common_edge
 {
 	my ($this, $candidate, $knowledge_about_planes_connected_to_lattice, $list_of_planes_connected_to_lattice_ref) = @_;
@@ -534,7 +628,9 @@ sub get_common_edge
 	return undef;
 }
 
+=head2 get_vertex_planes_if_candidate_is_connected
 
+=cut
 sub get_vertex_planes_if_candidate_is_connected
 {
 	my ($this, $candidate, $vertex, $knowledge_about_planes_connected_to_lattice, $list_of_planes_connected_to_lattice_ref) = @_;
@@ -559,6 +655,11 @@ sub get_vertex_planes_if_candidate_is_connected
 	return undef;
 }
 
+=head2 get_is_connected_with
+
+Returns true if and only if the two planes are identical.
+
+=cut
 sub get_is_connected_with
 {
 	my ($this, $s1, $s0, $list_of_connected_planes_ref) = @_;
@@ -572,7 +673,11 @@ sub get_is_connected_with
 }
 
 
+=head2 get_internal_angle
 
+Returns the internal angle given a plane and vertex.
+
+=cut
 sub get_internal_angle
 {
 	my ($this, $s, $vertex) = @_;
@@ -587,6 +692,12 @@ sub get_internal_angle
 	return undef;
 }
 
+=head2 get_can_candidate_be_connected_to_lattice_check_vertex_and_plane
+
+Checks whether a candidate can be connected to the lattice. It calculates the sum of internal angles
+adjacent to a vertex and responds true if and only if it is not greater than 360 degrees.
+
+=cut
 sub get_can_candidate_be_connected_to_lattice_check_vertex_and_plane
 {
 	my ($this, 
@@ -621,7 +732,11 @@ sub get_can_candidate_be_connected_to_lattice_check_vertex_and_plane
 	return 1;
 }
 
+=head2 get_can_candidate_be_connected_to_lattice_check_vertex
 
+Checks whether a candidate plane can be connected to the lattice. It checks the vertex.
+
+=cut
 sub get_can_candidate_be_connected_to_lattice_check_vertex
 {
 	my ($this, 
@@ -661,7 +776,11 @@ sub get_can_candidate_be_connected_to_lattice_check_vertex
 }
 
 
+=head2 get_can_candidate_be_connected_to_lattice
 
+Checks whether a candidate plane can be connected to lattice.
+
+=cut
 sub get_can_candidate_be_connected_to_lattice
 {
 	my ($this, 
@@ -693,7 +812,11 @@ sub get_can_candidate_be_connected_to_lattice
 	return 1;
 }
 
+=head2 get_common_edge_vertices
 
+Returns the vertices of an edge.
+
+=cut
 sub get_common_edge_vertices
 {
 	my ($this, $candidate, $common_edge) = @_;
@@ -714,7 +837,11 @@ sub get_common_edge_vertices
 	return undef;
 }
 
+=head2 get_common_edge_length
 
+Given two planes it returns the length of the common edge.
+
+=cut
 sub get_common_edge_length
 {
 	my ($this, $plane, $candidate) = @_;
@@ -726,6 +853,12 @@ sub get_common_edge_length
 	return undef;
 }
 
+
+=head2 add_to_lattice_subsequent_candidates
+
+Adds subsequent candidate planes to the lattice.
+
+=cut
 sub add_to_lattice_subsequent_candidates
 {
 	my ($this, 
@@ -767,6 +900,11 @@ ADDITION
 	return 0;
 }
 
+=head2 get_have_all_planes_been_connected
+
+Checks whether all the planes have been connected.
+
+=cut
 sub get_have_all_planes_been_connected
 {
 	my ($this, $knowledge_about_planes_connected_to_lattice, $knowledge_about_connections_between_planes, $list_of_planes_connected_to_lattice_ref) = @_;
@@ -792,7 +930,11 @@ sub get_have_all_planes_been_connected
 	return scalar(@$list_of_planes_connected_to_lattice_ref) == scalar(@list_of_active_planes);
 }
 
+=head2 get_angle_between_vectors
 
+Calculates an angle between two vectors (in degrees).
+
+=cut
 sub get_angle_between_vectors
 {
 	my $this = shift;
@@ -828,7 +970,11 @@ sub get_angle_between_vectors
 	return rad2deg(acos($r));
 }
 
+=head2 get_distance
 
+Calculates the distance between two points.
+
+=cut
 sub get_distance
 {
 	my $this = shift;
@@ -837,6 +983,12 @@ sub get_distance
 				+($$a{y}-$$b{y})*($$a{y}-$$b{y})
 				+($$a{z}-$$b{z})*($$a{z}-$$b{z}));
 }
+
+=head2 activate_the_planes_of
+
+Activates the planes of the given sheet.
+
+=cut
 
 sub activate_the_planes_of
 {
@@ -851,7 +1003,11 @@ sub activate_the_planes_of
 	}
 }
 
+=head2 scale_the_lattice
 
+Scales the lattice.
+
+=cut
 sub scale_the_lattice
 {
 	my ($this, $x1, $y1, $x2, $y2, $scale) = @_;
@@ -907,6 +1063,11 @@ sub scale_the_lattice
 	return 1;
 }
 
+=head2 rotate_lattice_optimally
+
+Finds the optimal angle to rotate the active planes coordinates.
+
+=cut
 sub rotate_lattice_optimally
 {
 	my ($this, $x1, $y1, $x2, $y2) = @_;
@@ -965,7 +1126,11 @@ sub rotate_lattice_optimally
 	}
 }
 
+=head2 get_coordinate
 
+Returns the coordinate of a point.
+
+=cut
 sub get_coordinate
 {
 	my ($this, $plane, $point, $coordinate) = @_;
@@ -975,7 +1140,10 @@ sub get_coordinate
 	croak "undefined coordinate for ${plane}${point}";
 }
 
+=head2 draw_overlap_lines
 
+
+=cut
 sub draw_overlap_lines
 {
 	my ($this, $plane, $edge, $points_ref, $x1, $y1, $x2, $y2) = @_;
@@ -1028,7 +1196,11 @@ sub draw_overlap_lines
 	}
 }
 
+=head2 draw_lines
 
+Draws the lines of the visible planes.
+
+=cut
 sub draw_lines
 {
 	my $this = shift;

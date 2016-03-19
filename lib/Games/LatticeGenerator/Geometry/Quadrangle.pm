@@ -7,6 +7,28 @@ use Games::LatticeGenerator::Geometry::Polygon;
 use base 'Games::LatticeGenerator::Geometry::Polygon';
 
 
+
+=head1 NAME
+
+Games::LatticeGenerator::Geometry::Quadrangle
+
+=head1 VERSION
+
+Version 0.01
+
+=cut
+
+our $VERSION = '0.01';
+
+
+
+=head1 SUBROUTINES/METHODS
+
+=head2 new
+
+A constructor. It adds knowledge about the internal angles.
+
+=cut
 sub new
 {
 	my $class = shift;
@@ -20,6 +42,9 @@ DESCRIPTION
 	return $this;
 }
 
+=head2 add_knowledge_about_internal_angles
+
+=cut
 sub add_knowledge_about_internal_angles
 {
 	my $this = shift;
@@ -31,7 +56,9 @@ DESCRIPTION
 	}
 }
 
+=head2 get_amount_of_edges
 
+=cut
 sub get_amount_of_edges
 {
 	return 4;

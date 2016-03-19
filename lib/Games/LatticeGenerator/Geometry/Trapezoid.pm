@@ -6,6 +6,25 @@ use Carp;
 use base 'Games::LatticeGenerator::Geometry::Polygon';
 
 
+=head1 NAME
+
+Games::LatticeGenerator::Geometry::Trapezoid 
+
+=head1 VERSION
+
+Version 0.01
+
+=cut
+
+our $VERSION = '0.01';
+
+=head1 SUBROUTINES/METHODS
+
+=head2 new
+
+A constructor.
+
+=cut
 sub new
 {
 	my $class = shift;
@@ -19,12 +38,17 @@ DESCRIPTION
 	return $this;
 }
 
+=head2 add_knowledge_about_internal_angles
+
+=cut
 sub add_knowledge_about_internal_angles
 {
 	croak "should be redefined";
 }
 
+=head2 get_amount_of_edges
 
+=cut
 sub get_amount_of_edges
 {
 	return 4;

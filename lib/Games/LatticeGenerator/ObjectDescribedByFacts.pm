@@ -8,6 +8,13 @@ use Carp;
 use Capture::Tiny ':all';
 use base 'Games::LatticeGenerator::ObjectWithName';
 
+
+=head1 SUBROUTINES/METHODS
+
+=head2 new
+
+=cut
+
 sub new
 {
 	my $class = shift;
@@ -22,6 +29,12 @@ DESCRIPTION
 	return $this;
 }
 
+=head2 get_unique
+
+Gets a list and returns it sorted and without duplicates.
+
+=cut
+
 sub get_unique
 {
 	my $this = shift;
@@ -30,6 +43,9 @@ sub get_unique
 	return sort keys %k;
 }
 
+=head2 get_description
+
+=cut
 sub get_description
 {
 	my $this = shift;
@@ -39,6 +55,11 @@ sub get_description
 
 our $common_knowledge = "";
 
+=head2 get_solution
+
+Uses Prolog to resolve print out all the variables satisfying the condition within the given knowledge (description).
+
+=cut
 sub get_solution
 {
 	my $this = shift;
@@ -69,6 +90,11 @@ CODE
 	return $this->get_unique(@result);		
 }
 
+=head2 get_solution_n
+
+Uses Prolog to print out all the tuples of variables satisfying the condition.
+
+=cut
 sub get_solution_n
 {
 	my $this = shift;
@@ -101,7 +127,7 @@ CODE
 }
 
 
-
+=pod
 sub get_stretches_whose_vertex_is_the_point
 {
 	my $this = shift;
@@ -124,6 +150,6 @@ sub get_polygons_whose_vertex_is_the_point
 	return $this->get_solution(__LINE__,"X", "is_a_Point($$point{name}), belongs_to($$point{name}, EDGE), belongs_to(EDGE, X), is_a_Polygon(X)");
 }
 
-
+=cut
 
 1;
