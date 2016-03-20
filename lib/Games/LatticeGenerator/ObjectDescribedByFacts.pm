@@ -85,8 +85,16 @@ CODE
 	my $p = AI::Prolog->new($code);
 	
 		
-	my @result = split /\n/, capture_stdout { $p->query("goal"); $p->results(); };
-
+	my @result;
+	
+	if ($$this{debug})
+	{
+		@result = split /\n/, tee_stdout { $p->query("goal"); $p->results(); };
+	}
+	else
+	{
+		@result = split /\n/, capture_stdout { $p->query("goal"); $p->results(); };
+	}
 	return $this->get_unique(@result);		
 }
 
@@ -121,7 +129,16 @@ CODE
 	
 	my $p = AI::Prolog->new($code);
 
-	my @result = split /\n/, capture_stdout { $p->query("goal"); $p->results(); };
+	my @result;
+	
+	if ($$this{debug})
+	{
+		@result = split /\n/, tee_stdout { $p->query("goal"); $p->results(); };
+	}
+	else
+	{
+		@result = split /\n/, capture_stdout { $p->query("goal"); $p->results(); };
+	}
 
 	return $this->get_unique(@result);
 }

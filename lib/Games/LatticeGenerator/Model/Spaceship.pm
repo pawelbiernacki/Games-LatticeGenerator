@@ -46,7 +46,7 @@ sub new
 	
 	croak "missing prefix" unless $prefix;
 
-	my $amount_of_points = int(rand()*10)+4;
+	my $amount_of_points = int(rand()*6)+4;
 	
 	# create the profiles
 	my @profile_0 = map { 

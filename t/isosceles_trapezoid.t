@@ -25,4 +25,4 @@ my $abcd = Games::LatticeGenerator::Geometry::IsoscelesTrapezoid->new(name => "a
 																	  base_lower => $cd, base_upper => $ab);
 
 ok(grep { /cd/ } $abcd->get_solution(__LINE__, "X", "is_a_BaseLower(X, abcd)"), "base lower is cd");
-ok(grep { /ab/ } $abcd->get_solution(__LINE__, "X", "is_a_BaseUpper(X, abcd)"), "base lower is ab");
+ok(grep { /ab/ } $abcd->get_solution(__LINE__, "X", "is_a_BaseUpper(X, abcd)"), "base upper is ab");
