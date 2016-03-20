@@ -173,7 +173,19 @@ sub set_the_point_coordinates
 =cut
 sub make_decision_whether_to_do_an_overlap
 {
-	return 0;
+	my ($this, $plane, $vertex1, $vertex2) = @_;
+	
+	my @scianki = $this->get_solution(__LINE__,"PLANE", <<CONDITION);
+belongs_to($vertex1, EDGE),
+belongs_to($vertex2, EDGE),	
+belongs_to(EDGE, PLANE), 
+belongs_to(EDGE, $plane),
+not(eq(PLANE, $plane)),
+is_visible(PLANE), 
+is_a_Polygon(PLANE), 
+not(is_connected_in_lattice(PLANE, $plane))
+CONDITION
+	return scalar(@scianki);
 }
 
 =head2 determine_the_coordinates_of_additional_points_for_overlaps
