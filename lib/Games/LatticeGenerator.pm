@@ -24,9 +24,9 @@ our $VERSION = '0.01';
 
     use Games::LatticeGenerator;
 
-    my $f = Games::LatticeGenerator->new(debug => 1, filename => "spaceship");
+    my $f = Games::LatticeGenerator->new(debug => 1);
     
-    $f->create_a_random_model("Games::LatticeGenerator::Model::Spaceship");
+    $f->create_a_random_model("Games::LatticeGenerator::Model::Spaceship", "spaceship");
 
 =head1 SUBROUTINES/METHODS
 
@@ -80,7 +80,7 @@ Saves the lattice's sheet into a PNG file.
 =cut
 sub save_the_lattice_of
 {
-	my ($this, $model, $sheet) = @_;
+	my ($this, $model, $sheet, $filename) = @_;
 	
 	$model->activate_the_planes_of($sheet);
 	
@@ -93,7 +93,7 @@ sub save_the_lattice_of
 	{
 		$model->create_png();
 		$model->draw_lines();
-		$model->save_png("$$this{filename}_${sheet}.png");
+		$model->save_png("${filename}_${sheet}.png");
 	}
 	else
 	{
@@ -109,7 +109,7 @@ and saves the sheets into PNG files.
 =cut
 sub create_a_random_model
 {
-	my ($this,$class) = @_;
+	my ($this,$class,$filename) = @_;
 
 	my $model = $class->new(
 		prefix => "alpha", 
@@ -133,9 +133,9 @@ sub create_a_random_model
 	
 	GD::Image->trueColor(1);
 	
-	if (defined($$this{filename}))
+	if ($filename)
 	{
-		$this->save_the_lattice_of($model, $_) for 1..$$model{amount_of_sheets};
+		$this->save_the_lattice_of($model, $_, $filename) for 1..$$model{amount_of_sheets};
 	}
 	else
 	{

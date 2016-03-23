@@ -175,7 +175,7 @@ sub make_decision_whether_to_do_an_overlap
 {
 	my ($this, $plane, $vertex1, $vertex2) = @_;
 	
-	my @scianki = $this->get_solution(__LINE__,"PLANE", <<CONDITION);
+	my @planes = $this->get_solution(__LINE__,"PLANE", <<CONDITION);
 belongs_to($vertex1, EDGE),
 belongs_to($vertex2, EDGE),	
 belongs_to(EDGE, PLANE), 
@@ -185,7 +185,28 @@ is_visible(PLANE),
 is_a_Polygon(PLANE), 
 not(is_connected_in_lattice(PLANE, $plane))
 CONDITION
-	return scalar(@scianki);
+
+	return 0 unless scalar(@planes);
+	
+	my $sheet1;
+	my $sheet2;
+	
+	for my $solid (@{$$this{solids}})
+	{
+		for my $plane2 (@{$$solid{planes}})
+		{
+			if ($$plane2{name} eq $planes[0])
+			{
+				$sheet1 = $$plane2{sheet};
+			}
+			if ($$plane2{name} eq $plane)
+			{
+				$sheet2 = $$plane2{sheet};
+			}
+		}
+	}
+	
+	return $sheet1 < $sheet2;
 }
 
 =head2 determine_the_coordinates_of_additional_points_for_overlaps
